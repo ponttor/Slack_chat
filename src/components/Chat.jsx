@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateMessagesWithId, updateChannels } from '../toolkitRedux/toolkitSlice.js';
+import { updateMessages } from '../toolkitRedux/messagesSlice.jsx';
+import { updateChannels } from '../toolkitRedux/channelsSlice.jsx';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import 'bootstrap';
@@ -13,10 +14,8 @@ const Chat = ({
   addChannel,
 }) => {
   const dispatch = useDispatch();
-  const text = useSelector((state) => state.rootReducer.toolkit.text);
-  const channels = useSelector((state) => state.rootReducer.toolkit.channels);
-  const messagesWithId = useSelector((state) => state.rootReducer.toolkit.messagesWithId);
-  const activeChannel = useSelector((state) => state.rootReducer.toolkit.activeChannel);
+  const text = useSelector((state) => state.rootReducer.messages.text);
+  const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
 
   const apiUrl = '/api/v1/data';
 
@@ -30,9 +29,8 @@ const Chat = ({
     });
     try {
       const response = await authAxios.get(apiUrl);
-      console.log(response.data);
-      dispatch(updateMessagesWithId(response.data.messages));
       dispatch(updateChannels(response.data.channels));
+      dispatch(updateMessages(response.data.messages));
     } catch (err) {
       console.log(err.response.statusText);
     }
@@ -49,7 +47,6 @@ const Chat = ({
           <div className="col-md-2">
             <Channels
               activeChannel={activeChannel}
-              channels={channels}
               removeChannel={removeChannel}
               renameChannel={renameChannel}
               addChannel={addChannel}
@@ -57,7 +54,6 @@ const Chat = ({
           </div>
           <div className="col-md-10">
             <Messages
-              messagesWithId={messagesWithId}
               activeChannel={activeChannel}
               text={text}
               sendMessage={sendMessage}

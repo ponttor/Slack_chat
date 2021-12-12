@@ -1,27 +1,23 @@
 import React from 'react';
 import i18next from 'i18next';
 import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateText } from '../toolkitRedux/toolkitSlice.js';
+import { updateText } from '../toolkitRedux/messagesSlice.jsx';
 
 export default function Messages({
-  messagesWithId,
   activeChannel,
   text,
   sendMessage,
 }) {
+  const messages = useSelector((state) => state.rootReducer.messages.messages);
   const dispatch = useDispatch();
-  const channels = useSelector((state) => state.rootReducer.toolkit.channels);
-
-  const displayMessages = () => {
-    if (messagesWithId.length === 0) {
-      console.log('no messages');
+  const renderMessages = () => {
+    if (messages.length === 0) {
       return null;
     }
     return (
       <div>
-        {messagesWithId
+        {messages
           .filter((el) => el.channel === activeChannel)
           .map((el) => <div key={el.id}>{el.message}</div>)}
       </div>
@@ -35,7 +31,6 @@ export default function Messages({
   function handleSubmit(e) {
     e.preventDefault();
     toast('Wow so easy!');
-    console.log('console');
     if (text === '') {
       console.log('nothing to send');
       return;
@@ -52,7 +47,7 @@ export default function Messages({
           <span className="text-muted">количество сообщений</span>
         </div>
         <div className="bg-white chat-messages overflow-auto px-5">
-          {displayMessages()}
+          {renderMessages()}
         </div>
         <div className="mt-auto px-5 py-3">
           <form onSubmit={handleSubmit} noValidate className="py-1 border rounded-2">

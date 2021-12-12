@@ -7,5 +7,9 @@ export default {
     modalAddTitle: 'Добавить канал',
     modalSubmit: 'Отправить',
     modalCancel: 'Отменить',
+    modalDelete: 'Удалить',
+    modalRenameTitle: 'Переименовать канал',
+    modalDeleteQuestion: 'Уверены?',
+    modalDeleteTitle: 'Удалить канал',
   },
 };

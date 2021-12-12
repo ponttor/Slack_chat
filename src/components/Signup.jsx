@@ -1,19 +1,15 @@
 import axios from 'axios';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import React from 'react';
 
 const Signup = () => {
   const onSubmit = async (values) => {
     try {
-      console.log(formik);
-      console.log(values);
       const response = await axios.post('/api/v1/signup', values);
       console.log(response.data);
     } catch (err) {
       if (err.response.statusText === 'Conflict') {
-        console.log('this is');
         console.log(err.response.statusText);
       }
     }

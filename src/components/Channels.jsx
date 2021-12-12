@@ -1,45 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import cn from 'classnames';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateActiveChannel, updateModalStatus, updateExtra } from '../toolkitRedux/toolkitSlice.js';
+import { updateActiveChannel } from '../toolkitRedux/channelsSlice.jsx';
+import { updateExtra } from '../toolkitRedux/modalSlice.jsx';
 import Modal from './Modal.jsx';
 
 export default function Channels({
   activeChannel,
-  channels,
   removeChannel,
   renameChannel,
   addChannel,
 }) {
   const dispatch = useDispatch();
-  const modalStatus = useSelector((state) => state.rootReducer.toolkit.modalStatus);
-  const extra = useSelector((state) => state.rootReducer.toolkit.extra);
-
-  const [channelId, setChannelId] = useState('');
+  const channels = useSelector((state) => state.rootReducer.channels.channels);
 
   function handleClick(e) {
     e.preventDefault();
-    // dispatch(updateModalStatus('add'));
     dispatch(updateExtra({ addChannel, type: 'add' }));
-
-    console.log(modalStatus);
   }
 
   function handleRemoveClick(e) {
     e.preventDefault();
-    removeChannel({ id: e.target.dataset.id });
-  }
-  function handleRenameClick(e) {
-    e.preventDefault();
-    setChannelId(e.target.dataset.id);
-    console.log(channelId);
-    console.log(e.target.dataset.id);
-    dispatch(updateExtra({ id: e.target.dataset.id, renameChannel, type: 'rename' }));
-    dispatch(updateModalStatus('rename'));
+    dispatch(updateExtra({ id: e.target.dataset.id, removeChannel, type: 'delete' }));
   }
 
-  const displayChats = () => {
+  function handleRenameClick(e) {
+    e.preventDefault();
+    dispatch(updateExtra({ id: e.target.dataset.id, renameChannel, type: 'rename' }));
+  }
+
+  const renderChannels = () => {
     if (channels.length === 0) {
       console.log('no channels found');
       return null;
@@ -93,10 +84,10 @@ export default function Channels({
           <button onClick={handleClick} type="button" className="btn m-3 h-25 text-primary border border-primary h-20 align-self-center">+</button>
         </div>
         <div className="btn-group-vertical" role="group">
-          {displayChats()}
+          {renderChannels()}
         </div>
       </div>
-      <Modal extra={extra} />
+      <Modal renderChannels={renderChannels} />
     </div>
   );
 }
