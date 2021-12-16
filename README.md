@@ -4,7 +4,7 @@
 
 ## Requirements
 
-* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+* [Heroku](https://calm-basin-99899.herokuapp.com/)
 
 ## Install
 
