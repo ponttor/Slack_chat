@@ -1,5 +1,5 @@
 import React from 'react';
 
-const AuthStatus = React.createContext(null);
+const AuthContext = React.createContext(null);
 
-export default AuthStatus;
+export default AuthContext;

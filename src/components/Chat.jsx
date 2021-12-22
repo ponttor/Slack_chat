@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateMessages } from '../toolkitRedux/messagesSlice.jsx';
-import { updateChannels } from '../toolkitRedux/channelsSlice.jsx';
+import { updateMessages } from '../slices/messagesSlice.jsx';
+import { updateChannels } from '../slices/channelsSlice.jsx';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import 'bootstrap';

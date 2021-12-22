@@ -7,6 +7,7 @@ const mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
   mode,
+  entry: './src/index.jsx',
   resolve: {
     extensions: ['.js', '.jsx'],
   },
@@ -29,7 +30,15 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/env',
+              '@babel/react',
+            ],
+          },
+        },
       },
       {
         test: /\.s[ac]ss$/i,

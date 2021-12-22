@@ -45,22 +45,16 @@ export default (app, defaultState = {}) => {
     console.log({ 'socket.id': socket.id });
 
     socket.on('newMessage', (message, acknowledge = _.noop) => {
-      console.log(message);
       const messageWithId = {
-        // ...message,
-        message: message.text,
-        channel: message.channel,
+        ...message,
         id: getNextId(),
       };
       state.messages.push(messageWithId);
-      console.log(state.messages);
       acknowledge({ status: 'ok' });
-      // app.io.emit('newMessage', messageWithId);
-      app.io.emit('newMessage', state.messages);
+      app.io.emit('newMessage', messageWithId);
     });
 
     socket.on('newChannel', (channel, acknowledge = _.noop) => {
-      console.log(channel);
       const channelWithId = {
         ...channel,
         removable: true,
@@ -69,12 +63,10 @@ export default (app, defaultState = {}) => {
 
       state.channels.push(channelWithId);
       acknowledge({ status: 'ok', data: channelWithId });
-      console.log(channelWithId);
       app.io.emit('newChannel', channelWithId);
     });
 
     socket.on('removeChannel', ({ id }, acknowledge = _.noop) => {
-      console.log(id);
       const channelId = Number(id);
       state.channels = state.channels.filter((c) => c.id !== channelId);
       state.messages = state.messages.filter((m) => m.channelId !== channelId);
@@ -82,20 +74,15 @@ export default (app, defaultState = {}) => {
 
       acknowledge({ status: 'ok' });
       app.io.emit('removeChannel', data);
-      console.log(data);
-      console.log(state.channels);
     });
 
     socket.on('renameChannel', ({ id, name }, acknowledge = _.noop) => {
-      console.log(id);
-      console.log(name);
       const channelId = Number(id);
       const channel = state.channels.find((c) => c.id === channelId);
       if (!channel) return;
       channel.name = name;
 
       acknowledge({ status: 'ok' });
-      console.log(channel);
       app.io.emit('renameChannel', channel);
     });
   });
@@ -107,7 +94,6 @@ export default (app, defaultState = {}) => {
 
     if (!user || user.password !== password) {
       reply.send(new Unauthorized());
-      console.log(req);
       return;
     }
 

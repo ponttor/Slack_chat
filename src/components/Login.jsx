@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import React, { useContext } from 'react';
-import AuthContext from '../AuthContext.js';
+// import AuthContext from '../AuthContext.js';
 
 const validationSchema = yup.object({
   username: yup.string().min(3, 'Please enter your real name').required('Full name is required'),
@@ -10,14 +10,13 @@ const validationSchema = yup.object({
 });
 
 const Login = () => {
-  const { isAuth, setIsAuth } = useContext(AuthContext);
-  setIsAuth(true);
-  console.log(isAuth);
+  // const { isAuth, setIsAuth } = useContext(AuthContext);
+  // setIsAuth(true);
   const onSubmit = async (values) => {
     try {
       const response = await axios.post('/api/v1/login', values);
       localStorage.setItem('token', response.data.token);
-      setIsAuth(true);
+      // setIsAuth(true);
     } catch (err) {
       console.log(err.response.statusText);
     }

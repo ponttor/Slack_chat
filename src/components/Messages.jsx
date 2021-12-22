@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import i18next from 'i18next';
 import { ToastContainer, toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateText } from '../toolkitRedux/messagesSlice.jsx';
+import { useSelector } from 'react-redux';
 
 export default function Messages({
   activeChannel,
-  text,
   sendMessage,
 }) {
+  const [text, setText] = useState('');
   const messages = useSelector((state) => state.rootReducer.messages.messages);
-  const dispatch = useDispatch();
   const renderMessages = () => {
     if (messages.length === 0) {
       return null;
@@ -25,7 +23,7 @@ export default function Messages({
   };
 
   const handleChange = (e) => {
-    dispatch(updateText(e.target.value));
+    setText(e.target.value);
   };
 
   function handleSubmit(e) {
@@ -35,8 +33,8 @@ export default function Messages({
       console.log('nothing to send');
       return;
     }
-    sendMessage({ text, channel: activeChannel });
-    dispatch(updateText(''));
+    sendMessage({ message: text, channel: activeChannel });
+    setText('');
   }
 
   return (
