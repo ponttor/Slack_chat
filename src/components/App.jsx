@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserHistory } from "history";
-import { Switch, Route, Router } from "react-router-dom";
+import { Switch, Route, Router, Redirect, useHistory, BrowserRouter } from "react-router-dom";
 // import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch } from "react-redux";
 import Login from "./Login.jsx";
@@ -8,6 +8,7 @@ import Page404 from "./NotFoundPage.jsx";
 import Chat from "./Chat.jsx";
 import Nav from "./Nav.jsx";
 import Signup from "./Signup.jsx";
+import AuthProvider from "./AuthProvider.jsx";
 import {
   addNewChannel,
   deleteChannel,
@@ -17,7 +18,9 @@ import { updateMessages } from "../slices/messagesSlice.jsx";
 
 const App = ({ socket }) => {
   const dispatch = useDispatch();
-  const history = createBrowserHistory();
+  const history = useHistory();
+  console.log(history);
+  // const history = createBrowserHistory();
 
   window.socket = socket;
   socket.on("newMessage", (message) => {
@@ -58,10 +61,20 @@ const App = ({ socket }) => {
   function renameChannel({ id, name }) {
     socket.emit("renameChannel", { id, name });
   }
+  // const isAuth = localStorage.getItem("token");
+  // console.log(`isAuth: ${isAuth}`);
 
+  // const pageRender = () => {
+  //   isAuth ? history.push("/") : history.push("/login");
+  // };
+
+  // Auth: login, logout, user
+  //AuthProvider props.
   return (
     <>
-      <Router history={history}>
+      <AuthProvider>
+        <BrowserRouter>
+        {/* <Router history={history}> */}
         <Nav />
         <Switch>
           <Route exact path="/">
@@ -80,7 +93,9 @@ const App = ({ socket }) => {
           </Route>
           <Route exact path="*" component={Page404} />
         </Switch>
-      </Router>
+        {/* </Router> */}
+        </BrowserRouter>
+      </AuthProvider>
     </>
   );
 };

@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
+import { Switch, Route, Router, Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMessages } from '../slices/messagesSlice.jsx';
 import { updateChannels } from '../slices/channelsSlice.jsx';
+import { createBrowserHistory } from "history";
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
+import AuthContext from '../AuthContext';
 import 'bootstrap';
 
 const Chat = ({
@@ -16,6 +19,9 @@ const Chat = ({
   const dispatch = useDispatch();
   const text = useSelector((state) => state.rootReducer.messages.text);
   const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
+
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const history = useHistory();
 
   const apiUrl = '/api/v1/data';
 
@@ -39,9 +45,10 @@ const Chat = ({
   useEffect(() => {
     renderInitialData();
   }, []);
-
+  console.log(`history: ${history}`);
   return (
     <>
+      {!isAuthenticated && history.push('/login')}
       <div className="container bg-light mt-4">
         <div className="row">
           <div className="col-md-2">

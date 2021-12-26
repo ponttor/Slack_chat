@@ -39,8 +39,9 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
       console.log('no channels found');
       return null;
     }
+    console.log(channels)
     return channels.map((el) => {
-      const classNames = cn('btn btn-light text-left', {
+      const classNames = cn('btn btn-light', {
         active: activeChannel === el.name,
       });
       const classNamesDropDown = cn('btn btn-light dropdown-toggle', {
