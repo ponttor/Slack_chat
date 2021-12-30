@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrouserRouter as Router } from "react-router-dom";
 import i18next from "i18next";
+import 'popper.js';
 import { io } from "socket.io-client";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";

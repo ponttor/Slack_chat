@@ -7,12 +7,18 @@ export default function ModalAdd({ setIsOpen }) {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const channels = useSelector((state) => state.rootReducer.channels.channels);
+  // console.log(`ch: ${channels}`);
+  // console.log(Object.keys(channels));
   const { addChannel } = useSelector((state) => state.rootReducer.modal.extra);
 
   function handleSubmit(e) {
     e.preventDefault();
     if (text === '') {
       console.log('nothing to send');
+      return;
+    }
+    if (!channels) {
+      console.log('no channels');
       return;
     }
     if (channels.filter((el) => el.name === text).length !== 0) {

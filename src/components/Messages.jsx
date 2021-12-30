@@ -9,7 +9,11 @@ export default function Messages({
 }) {
   const [text, setText] = useState('');
   const messages = useSelector((state) => state.rootReducer.messages.messages);
+  console.log(`messages: ${messages}`)
   const renderMessages = () => {
+    if (!messages) {
+      return null;
+    }
     if (messages.length === 0) {
       return null;
     }

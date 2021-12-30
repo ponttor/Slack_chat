@@ -35,8 +35,8 @@ const Chat = ({
     });
     try {
       const response = await authAxios.get(apiUrl);
-      dispatch(updateChannels(response.data.channels));
-      dispatch(updateMessages(response.data.messages));
+      dispatch(updateChannels({ channels: response.data.channels }));
+      dispatch(updateMessages({ messages: response.data.messages }));
     } catch (err) {
       console.log(err.response.statusText);
     }

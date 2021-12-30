@@ -7,21 +7,22 @@ const channelsSlice = createSlice({
   },
   reducers: {
     updateChannels(state, action) {
-      state.channels = action.payload;
+      state.channels = action.payload.channels;
+      // state.channels = action.payload.id;
     },
     updateChannel(state, action) {
       state.channels.map((element) => {
-        if (element.id === action.payload.id) {
-          return action.payload;
+        if (element.id === action.payload.channelId) {
+          return { name: action.payload.name, removable: true, id: action.payload.channelId };
         }
         return element;
       });
     },
     addNewChannel(state, action) {
-      state.channels.push(action.payload);
+      state.channels.push(action.payload.channels);
     },
     deleteChannel(state, action) {
-      state.channels = state.channels.filter((element) => element.id !== action.payload);
+      state.channels = state.channels.filter((element) => element.id !== action.payload.channelId);
     },
   },
 });

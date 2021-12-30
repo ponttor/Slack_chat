@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import cn from 'classnames';
+import cn from "classnames";
 import i18next from "i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { updateExtra } from "../slices/modalSlice.jsx";
@@ -8,43 +8,52 @@ import Modal from "./Modal/Modal.jsx";
 export default function Channels({ removeChannel, renameChannel, addChannel }) {
   const [activeChannel, setActiveChannel] = useState("general");
   const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState('');
+  const [modalType, setModalType] = useState("");
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.rootReducer.channels.channels);
+  // const channels = useSelector((state) => console.log(state.rootReducer.channels.channels));
+  // console.log(`channels: ${channels.length}`);
   // const extra = useSelector((state) => state.rootReducer.modal.extra);
 
   function handleClick(e) {
     e.preventDefault();
     setIsOpen(true);
     dispatch(updateExtra({ addChannel }));
-    setModalType('add');
+    setModalType("add");
   }
 
   function handleRemoveClick(e) {
     e.preventDefault();
     setIsOpen(true);
     dispatch(updateExtra({ id: e.target.dataset.id, removeChannel }));
-    setModalType('remove');
+    setModalType("remove");
   }
 
   function handleRenameClick(e) {
     e.preventDefault();
     setIsOpen(true);
     dispatch(updateExtra({ id: e.target.dataset.id, renameChannel }));
-    setModalType('rename');
+    setModalType("rename");
   }
 
   const renderChannels = () => {
-    if (channels.length === 0) {
-      console.log('no channels found');
+    console.log('nothingsts')
+    console.log(channels)
+    // console.log(`channels: ${useSelector((state) => console.log(state.rootReducer.channels.channels))}`);
+    if (!channels) {
+      console.log("no channels");
       return null;
     }
-    console.log(channels)
+    if (channels.length === 0) {
+      console.log("no channels found");
+      return null;
+    }
     return channels.map((el) => {
-      const classNames = cn('btn btn-light', {
+      // console.log(el);
+      const classNames = cn("btn btn-light", {
         active: activeChannel === el.name,
       });
-      const classNamesDropDown = cn('btn btn-light dropdown-toggle', {
+      const classNamesDropDown = cn("btn btn-light dropdown-toggle", {
         active: activeChannel === el.name,
       });
       const handleClickChannel = (e) => {
@@ -59,19 +68,57 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
               className={classNames}
               data-id={el.id}
             >
-              {`# ${el.name}`}
+              {`${el.name}`}
             </button>
           ) : (
-            <div className="dropdown">
-  <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-    Dropdown button
-  </button>
-  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a className="dropdown-item" href="#">Action</a></li>
-    <li><a className="dropdown-item" href="#">Another action</a></li>
-    <li><a className="dropdown-item" href="#">Something else here</a></li>
-  </ul>
-</div>
+            <div
+              className="btn-group"
+              role="group"
+              aria-label="Button group with nested dropdown"
+            >
+              <button
+                type="button"
+                onClick={handleClickChannel}
+                className={classNames}
+                data-id={el.id}
+              >
+                {`# ${el.name}`}
+              </button>
+              <div className="dropdown">
+                <button
+                  id="dropdownMenuButton1"
+                  type="button"
+                  className={classNamesDropDown}
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                />
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton1"
+                >
+                  <li>
+                    <button
+                      data-id={el.id}
+                      onClick={handleRemoveClick}
+                      type="button"
+                      className="dropdown-item"
+                    >
+                      Удалить
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      data-id={el.id}
+                      onClick={handleRenameClick}
+                      type="button"
+                      className="dropdown-item"
+                    >
+                      Переименовать
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           )}
         </div>
       );
@@ -82,7 +129,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
     <div>
       <div>
         <div className="pt-5 d-flex justify-content-between mb-2">
-          <div className="align-self-center">{i18next.t('channels')}</div>
+          <div className="align-self-center">{i18next.t("channels")}</div>
           <button
             onClick={handleClick}
             type="button"

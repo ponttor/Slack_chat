@@ -14,7 +14,7 @@ import {
   deleteChannel,
   updateChannel,
 } from "../slices/channelsSlice.jsx";
-import { updateMessages } from "../slices/messagesSlice.jsx";
+import { addNewMessage } from "../slices/messagesSlice.jsx";
 
 const App = ({ socket }) => {
   const dispatch = useDispatch();
@@ -24,16 +24,16 @@ const App = ({ socket }) => {
 
   window.socket = socket;
   socket.on("newMessage", (message) => {
-    dispatch(updateMessages(message));
+    dispatch(addNewMessage({ message }));
   });
   socket.on("newChannel", (data) => {
     dispatch(addNewChannel(data));
   });
   socket.on("removeChannel", (data) => {
-    dispatch(deleteChannel(data.id));
+    dispatch(deleteChannel({ channelId: data.id }));
   });
-  socket.on("renameChannel", ({ id, name }) => {
-    dispatch(updateChannel({ id, name }));
+  socket.on("renameChannel", ({ channelId, name }) => {
+    dispatch(updateChannel({ channelId, name }));
   });
 
   // const notify = () => toast('Wow so easy!');
