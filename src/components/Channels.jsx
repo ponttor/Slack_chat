@@ -37,8 +37,8 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
   }
 
   const renderChannels = () => {
-    console.log('nothingsts')
-    console.log(channels)
+    console.log('nothingsts');
+    console.log(channels);
     // console.log(`channels: ${useSelector((state) => console.log(state.rootReducer.channels.channels))}`);
     if (!channels) {
       console.log("no channels");
@@ -49,7 +49,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
       return null;
     }
     return channels.map((el) => {
-      // console.log(el);
+      console.log(el.name);
       const classNames = cn("btn btn-light", {
         active: activeChannel === el.name,
       });

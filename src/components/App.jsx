@@ -1,6 +1,5 @@
 import React from "react";
-import { createBrowserHistory } from "history";
-import { Switch, Route, Router, Redirect, useHistory, BrowserRouter } from "react-router-dom";
+import { Switch, Route, useHistory, BrowserRouter } from "react-router-dom";
 // import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch } from "react-redux";
 import Login from "./Login.jsx";
@@ -47,6 +46,7 @@ const App = ({ socket }) => {
   };
 
   const addChannel = (data) => {
+    console.log(data);
     if (socket.connected) {
       socket.volatile.emit("newChannel", { name: data });
     } else {

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateExtra } from '../../slices/modalSlice.jsx';
+import { addNewChannel } from '../../slices/channelsSlice.jsx';
+
 
 export default function ModalAdd({ setIsOpen }) {
   const dispatch = useDispatch();
@@ -25,6 +27,10 @@ export default function ModalAdd({ setIsOpen }) {
       console.log('the channel already exists');
       return;
     }
+    const lastId = channels.length - 1;
+    const nextId = Number(channels[lastId]).id + 1;
+    addNewChannel({ channel: { name: text, removable: true, id: nextId }});
+    console.log(`text: ${text}`);
     addChannel(text);
     setText('');
     dispatch(updateExtra({}));
