@@ -7,6 +7,7 @@ This is a simple live chat app.
 The app is available here: https://calm-basin-99899.herokuapp.com
 
 username: admin
+
 password: admin
 
 ## Install
