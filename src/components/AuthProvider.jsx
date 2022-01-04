@@ -26,8 +26,8 @@ const AuthProvider = ({ children }) => {
 
   function logout() {
     setIsAuthenticated(false);
-    localStorage.setItem("user", {});
-    localStorage.setItem("token", null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 
   function signup(name) {
