@@ -7,12 +7,17 @@ const messagesSlice = createSlice({
   },
 
   reducers: {
-    addNewMessage(state, { payload: message }) {
+    addNewMessage(state, { payload }) {
+      const { message } = payload;
+      console.log(message);
       state.messages.push(message);
+      const token = localStorage.getItem('user');
+      console.log(Object.entries(token));
     },
-    updateMessages(state, { payload: messages }) {
+    updateMessages(state, { payload }) {
+      const { messages } = payload;
       state.messages = messages;
-    }
+    },
   },
 });
 

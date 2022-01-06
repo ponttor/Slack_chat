@@ -44,7 +44,6 @@ const Chat = ({
   useEffect(() => {
     renderInitialData();
   }, []);
-  console.log(`history: ${history}`);
   return (
     <>
       {!isAuthenticated && history.push('/login')}

@@ -6,7 +6,7 @@ import { updateExtra } from '../../slices/modalSlice.jsx';
 export default function ModalRename({ renderChannels, setIsOpen }) {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
-  const channels = useSelector((state) => state.rootReducer.channels.channels.channels);
+  const channels = useSelector((state) => state.rootReducer.channels.channels);
   const extra = useSelector((state) => state.rootReducer.modal.extra);
 
   function handleChange(e) {

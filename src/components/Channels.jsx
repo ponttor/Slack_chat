@@ -7,16 +7,11 @@ import { setActiveChannel } from '../slices/channelsSlice.jsx';
 import Modal from './Modal/Modal.jsx';
 
 export default function Channels({ removeChannel, renameChannel, addChannel }) {
-  // const [activeChannel, setActiveChannel] = useState('general');
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState('');
   const dispatch = useDispatch();
-  const channels = useSelector((state) => state.rootReducer.channels.channels.channels);
+  const channels = useSelector((state) => state.rootReducer.channels.channels);
   const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
-  // console.log(activeChannel);
-  // const channels = useSelector((state) => console.log(state.rootReducer.channels.channels));
-  // console.log(`channels: ${channels.length}`);
-  // const extra = useSelector((state) => state.rootReducer.modal.extra);
 
   function handleClick(e) {
     e.preventDefault();
@@ -39,8 +34,6 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
     setModalType('rename');
   }
   const renderChannels = () => {
-    // console.log(channels)
-    // console.log(`channels: ${useSelector((state) => console.log(state.rootReducer.channels.channels))}`);
     if (!channels) {
       console.log('no channels');
       return null;
@@ -49,12 +42,8 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
       console.log('no channels found');
       return null;
     }
-    // console.log(typeof channels);
-    console.log(channels);
 
     return channels.map((el) => {
-      // console.log(activeChannel);
-      console.log(el);
       const classNames = cn('btn', {
         'btn-primary': activeChannel === el.name,
         'btn-light': activeChannel !== el.name,
@@ -63,7 +52,6 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
         'btn-primary': activeChannel === el.name,
       });
       const handleClickChannel = (e) => {
-        // console.log(e.target.dataset.id);
         dispatch(setActiveChannel({ activeChannel: e.target.dataset.id }));
       };
       return (

@@ -7,7 +7,7 @@ export default function Messages({
   sendMessage,
 }) {
   const [text, setText] = useState('');
-  const messages = useSelector((state) => state.rootReducer.messages.messages.messages);
+  const messages = useSelector((state) => state.rootReducer.messages.messages);
   const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
   const renderMessages = () => {
     if (!messages) {
@@ -16,7 +16,6 @@ export default function Messages({
     if (messages.length === 0) {
       return null;
     }
-    console.log(`messages: ${messages}`);
     return (
       <div>
         {messages

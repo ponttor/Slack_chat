@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Switch, Route, useHistory, BrowserRouter,
+  Switch, Route, BrowserRouter,
 } from 'react-router-dom';
 // import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -19,16 +19,13 @@ import { addNewMessage } from '../slices/messagesSlice.jsx';
 
 const App = ({ socket }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  console.log(history);
-  // const history = createBrowserHistory();
 
   window.socket = socket;
   socket.on('newMessage', (message) => {
     dispatch(addNewMessage({ message }));
   });
   socket.on('newChannel', (data) => {
-    dispatch(addNewChannel(data));
+    dispatch(addNewChannel({ newChannel: data }));
   });
   socket.on('removeChannel', (data) => {
     dispatch(deleteChannel({ channelId: data.id }));
@@ -48,7 +45,6 @@ const App = ({ socket }) => {
   };
 
   const addChannel = (data) => {
-    // console.log(data);
     if (socket.connected) {
       socket.volatile.emit('newChannel', { name: data });
     } else {
@@ -63,15 +59,7 @@ const App = ({ socket }) => {
   function renameChannel({ id, name }) {
     socket.emit('renameChannel', { id, name });
   }
-  // const isAuth = localStorage.getItem("token");
-  // console.log(`isAuth: ${isAuth}`);
 
-  // const pageRender = () => {
-  //   isAuth ? history.push("/") : history.push("/login");
-  // };
-
-  // Auth: login, logout, user
-  // AuthProvider props.
   return (
     <>
       <AuthProvider>

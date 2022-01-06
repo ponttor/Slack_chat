@@ -13,7 +13,6 @@ export default function Modal({
   if (!isOpen) {
     return null;
   }
-  console.log(type);
   switch (type) {
     case 'add':
       return <Add setIsOpen={setIsOpen} />;

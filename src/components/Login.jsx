@@ -32,10 +32,7 @@ const Login = () => {
     if (err.response) {
       // if (err.response.status === 401) {
       setAuthFailed(true);
-      // console.log(err);
-      // setError(true);
       setInputClassname('form-control is-invalid');
-      // console.log(inputClassname);
       return;
     }
     if (!err.response) {
@@ -91,7 +88,6 @@ const Login = () => {
                   </h1>
                   <div className="form-floating mb-3 form-group">
                     <input
-                      // className="form-control"
                       className={inputClassname}
                       type="text"
                       id="username"
@@ -121,18 +117,10 @@ const Login = () => {
                       {i18next.t('loginPassword')}
                     </label>
                   </div>
-                  {/* {formik.values.username.length === 0 && <div className="text-danger">Введите имя</div>} */}
                   {(authFailed && formik.values.username.length !== 0 && formik.values.password.length !== 0) && <Form.Text className="text-danger">{i18next.t('LogError')}</Form.Text>}
                   {(authFailed && formik.values.username.length === 0) && <Form.Text className="text-danger">{i18next.t('LogErrorName')}</Form.Text>}
                   {(authFailed && formik.values.password.length === 0 && formik.values.username.length !== 0) && <Form.Text className="text-danger">{i18next.t('LogErrorPassword')}</Form.Text>}
                   {netError && <Form.Text className="text-danger">{i18next.t('NetError')}</Form.Text>}
-                  {/* <div className="text-danger">{formik.errors.password}</div>
-                  {error && (
-                    <div className="invalid-tooltip">
-                      Неверные имя пользователя или пароль
-                    </div>
-                  )} */}
-
                   <button
                     type="submit"
                     className="w-100 mb-3 btn btn-outline-primary"
