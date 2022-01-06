@@ -1,10 +1,9 @@
 import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
-import { Switch, Route, Router, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMessages } from '../slices/messagesSlice.jsx';
 import { updateChannels } from '../slices/channelsSlice.jsx';
-import { createBrowserHistory } from "history";
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import AuthContext from '../AuthContext';
@@ -20,7 +19,7 @@ const Chat = ({
   const text = useSelector((state) => state.rootReducer.messages.text);
   const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
 
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
   const history = useHistory();
 
   const apiUrl = '/api/v1/data';
@@ -38,7 +37,7 @@ const Chat = ({
       dispatch(updateChannels({ channels: response.data.channels }));
       dispatch(updateMessages({ messages: response.data.messages }));
     } catch (err) {
-      console.log(err.response.statusText);
+      // console.log(err.response.statusText);
     }
   };
 

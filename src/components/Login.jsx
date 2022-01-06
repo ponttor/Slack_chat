@@ -1,42 +1,55 @@
-import axios from "axios";
-import cn from "classnames";
-import * as yup from "yup";
-import i18next from "i18next";
-import { useHistory } from "react-router-dom";
-import { useFormik } from "formik";
-import React, { useState, useContext } from "react";
-import AuthContext from "../AuthContext";
+import axios from 'axios';
+import * as yup from 'yup';
+import i18next from 'i18next';
+import { useHistory } from 'react-router-dom';
+import { Form } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../AuthContext';
 
 const validationSchema = yup.object({
   username: yup
     .string()
-    .min(3, "Please enter your real name")
-    .required("Full name is required"),
-  password: yup.string().required("Password is required"),
+    .required(i18next.t('ValidationReqName')),
+  password: yup.string().required(i18next.t('PasswordRequired')),
 });
+// const validationSchema = yup.object({
+//   username: yup
+//     .string()
+//     .min(3, i18next.t('ValidationMinName'))
+//     .required(i18next.t('ValidationReqName')),
+//   password: yup.string().required(i18next.t('PasswordRequired')),
+// });
 
 const Login = () => {
-  const [inputClassname, setInputClassname] = useState("form-control");
-  const [error, setError] = useState(false);
+  const [authFailed, setAuthFailed] = useState(false);
+  const [inputClassname, setInputClassname] = useState('form-control');
+  const [netError, setNetError] = useState(false);
   const { isAuthenticated, login } = useContext(AuthContext);
   const history = useHistory();
 
   const handleError = (err) => {
     if (err.response) {
       // if (err.response.status === 401) {
-      console.log(err);
-      setError(true);
-      setInputClassname("form-control is-invalid");
-      console.log(inputClassname);
+      setAuthFailed(true);
+      // console.log(err);
+      // setError(true);
+      setInputClassname('form-control is-invalid');
+      // console.log(inputClassname);
       return;
     }
-    console.log("no network");
+    if (!err.response) {
+      setNetError(true);
+      console.log('no network');
+    }
   };
 
   const onSubmit = async (value) => {
+    setAuthFailed(false);
+    setNetError(false);
     try {
-      const response = await axios.post("/api/v1/login", value);
-      localStorage.setItem("token", response.data.token);
+      const response = await axios.post('/api/v1/login', value);
+      localStorage.setItem('token', response.data.token);
       login(value.name);
     } catch (err) {
       handleError(err);
@@ -44,18 +57,19 @@ const Login = () => {
   };
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     onSubmit,
-    validationSchema,
+    // validationSchema,
   });
 
-  console.log(formik);
+  // console.log(formik);
+  console.log(formik.values.username.length);
 
   return (
     <>
-      {isAuthenticated && history.push("/")}
+      {isAuthenticated && history.push('/')}
       <div className="container-fluid h-100">
         <div className="h-100 d-flex justify-content-center align-items-center">
           <div className="col-12 col-md-8 col-xxl-6">
@@ -65,7 +79,7 @@ const Login = () => {
                   <img
                     src="https://res.cloudinary.com/ponttor/image/upload/v1640614045/hexlet_pielxk.jpg"
                     className="card-img-top flex-grow-1 rounded-circle p-5"
-                    alt={i18next.t("loginTitle")}
+                    alt={i18next.t('loginTitle')}
                   />
                 </div>
                 <form
@@ -73,7 +87,7 @@ const Login = () => {
                   onSubmit={formik.handleSubmit}
                 >
                   <h1 className="text-center mb-4">
-                    {i18next.t("loginTitle")}
+                    {i18next.t('loginTitle')}
                   </h1>
                   <div className="form-floating mb-3 form-group">
                     <input
@@ -85,10 +99,10 @@ const Login = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.name}
-                      placeholder={i18next.t("loginName")}
+                      placeholder={i18next.t('loginName')}
                     />
                     <label className="d-block" htmlFor="username">
-                      {i18next.t("loginName")}
+                      {i18next.t('loginName')}
                     </label>
                   </div>
                   <div className="text-danger">{formik.errors.username}</div>
@@ -101,32 +115,40 @@ const Login = () => {
                       name="password"
                       onChange={formik.handleChange}
                       value={formik.values.password}
-                      placeholder={i18next.t("loginPassword")}
+                      placeholder={i18next.t('loginPassword')}
                     />
                     <label className="d-block" htmlFor="password">
-                      {i18next.t("loginPassword")}
+                      {i18next.t('loginPassword')}
                     </label>
                   </div>
-                  <div className="text-danger">{formik.errors.password}</div>
+                  {/* {formik.values.username.length === 0 && <div className="text-danger">Введите имя</div>} */}
+                  {(authFailed && formik.values.username.length !== 0 && formik.values.password.length !== 0) && <Form.Text className="text-danger">{i18next.t('LogError')}</Form.Text>}
+                  {(authFailed && formik.values.username.length === 0) && <Form.Text className="text-danger">{i18next.t('LogErrorName')}</Form.Text>}
+                  {(authFailed && formik.values.password.length === 0 && formik.values.username.length !== 0) && <Form.Text className="text-danger">{i18next.t('LogErrorPassword')}</Form.Text>}
+                  {netError && <Form.Text className="text-danger">{i18next.t('NetError')}</Form.Text>}
+                  {/* <div className="text-danger">{formik.errors.password}</div>
                   {error && (
                     <div className="invalid-tooltip">
                       Неверные имя пользователя или пароль
                     </div>
-                  )}
+                  )} */}
 
                   <button
                     type="submit"
                     className="w-100 mb-3 btn btn-outline-primary"
                   >
-                    {i18next.t("loginTitle")}
+                    {i18next.t('loginTitle')}
                   </button>
                 </form>
               </div>
               <div className="card-footer p-4">
                 <small>
                   <div className="text-center">
-                    <span>{i18next.t("loginNoAccount")} </span>
-                    <a href="/signup">{i18next.t("loginRegistration")}</a>
+                    <span>
+                      {i18next.t('loginNoAccount')}
+                      {' '}
+                    </span>
+                    <a href="/signup">{i18next.t('loginRegistration')}</a>
                   </div>
                 </small>
               </div>

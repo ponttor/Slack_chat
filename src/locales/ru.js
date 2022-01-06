@@ -22,5 +22,12 @@ export default {
     SignupPassword: 'Пароль',
     SignupPasswordConfirm: 'Подтвердите пароль',
     SignupButton: 'Зарегистрироваться',
+    ValidationMinName: 'Введите настоящее имя',
+    ValidationReqName: 'Введите свое имя',
+    PasswordRequired: 'Введите пароль',
+    LogError: 'Неверные имя пользователя или пароль',
+    LogErrorName: 'Введите свое имя',
+    LogErrorPassword: 'Введите пароль',
+    NetError: 'Ошибка сети',
   },
 };

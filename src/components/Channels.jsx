@@ -1,16 +1,19 @@
-import React, { useState } from "react";
-import cn from "classnames";
-import i18next from "i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { updateExtra } from "../slices/modalSlice.jsx";
-import Modal from "./Modal/Modal.jsx";
+import React, { useState } from 'react';
+import cn from 'classnames';
+import i18next from 'i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateExtra } from '../slices/modalSlice.jsx';
+import { setActiveChannel } from '../slices/channelsSlice.jsx';
+import Modal from './Modal/Modal.jsx';
 
 export default function Channels({ removeChannel, renameChannel, addChannel }) {
-  const [activeChannel, setActiveChannel] = useState("general");
+  // const [activeChannel, setActiveChannel] = useState('general');
   const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState("");
+  const [modalType, setModalType] = useState('');
   const dispatch = useDispatch();
-  const channels = useSelector((state) => state.rootReducer.channels.channels);
+  const channels = useSelector((state) => state.rootReducer.channels.channels.channels);
+  const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
+  // console.log(activeChannel);
   // const channels = useSelector((state) => console.log(state.rootReducer.channels.channels));
   // console.log(`channels: ${channels.length}`);
   // const extra = useSelector((state) => state.rootReducer.modal.extra);
@@ -19,45 +22,49 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
     e.preventDefault();
     setIsOpen(true);
     dispatch(updateExtra({ addChannel }));
-    setModalType("add");
+    setModalType('add');
   }
 
   function handleRemoveClick(e) {
     e.preventDefault();
     setIsOpen(true);
     dispatch(updateExtra({ id: e.target.dataset.id, removeChannel }));
-    setModalType("remove");
+    setModalType('delete');
   }
 
   function handleRenameClick(e) {
     e.preventDefault();
     setIsOpen(true);
     dispatch(updateExtra({ id: e.target.dataset.id, renameChannel }));
-    setModalType("rename");
+    setModalType('rename');
   }
-
   const renderChannels = () => {
-    console.log('nothingsts');
-    console.log(channels);
+    // console.log(channels)
     // console.log(`channels: ${useSelector((state) => console.log(state.rootReducer.channels.channels))}`);
     if (!channels) {
-      console.log("no channels");
+      console.log('no channels');
       return null;
     }
     if (channels.length === 0) {
-      console.log("no channels found");
+      console.log('no channels found');
       return null;
     }
+    // console.log(typeof channels);
+    console.log(channels);
+
     return channels.map((el) => {
-      console.log(el.name);
-      const classNames = cn("btn btn-light", {
-        active: activeChannel === el.name,
+      // console.log(activeChannel);
+      console.log(el);
+      const classNames = cn('btn', {
+        'btn-primary': activeChannel === el.name,
+        'btn-light': activeChannel !== el.name,
       });
-      const classNamesDropDown = cn("btn btn-light dropdown-toggle", {
-        active: activeChannel === el.name,
+      const classNamesDropDown = cn('btn btn-light dropdown-toggle', {
+        'btn-primary': activeChannel === el.name,
       });
       const handleClickChannel = (e) => {
-        setActiveChannel(e.target.value);
+        // console.log(e.target.dataset.id);
+        dispatch(setActiveChannel({ activeChannel: e.target.dataset.id }));
       };
       return (
         <div key={el.id}>
@@ -66,7 +73,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
               type="button"
               onClick={handleClickChannel}
               className={classNames}
-              data-id={el.id}
+              data-id={el.name}
             >
               {`${el.name}`}
             </button>
@@ -80,7 +87,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
                 type="button"
                 onClick={handleClickChannel}
                 className={classNames}
-                data-id={el.id}
+                data-id={el.name}
               >
                 {`# ${el.name}`}
               </button>
@@ -129,7 +136,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
     <div>
       <div>
         <div className="pt-5 d-flex justify-content-between mb-2">
-          <div className="align-self-center">{i18next.t("channels")}</div>
+          <div className="align-self-center">{i18next.t('channels')}</div>
           <button
             onClick={handleClick}
             type="button"

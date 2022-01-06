@@ -18,9 +18,11 @@ export default function Modal({
     case 'add':
       return <Add setIsOpen={setIsOpen} />;
     case 'rename':
-      return <Rename renderChannels={renderChannels} />;
+      return <Rename renderChannels={renderChannels} setIsOpen={setIsOpen} />;
     case 'delete':
-      return <Delete />;
+      return <Delete setIsOpen={setIsOpen} />;
+    case 'null':
+      return null;
     default:
       throw new Error(`Unknown type: ${type}`);
   }

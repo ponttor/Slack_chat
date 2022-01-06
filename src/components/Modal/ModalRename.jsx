@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateModalStatus, updateExtra } from '../../slices/modalSlice.jsx';
+import { updateExtra } from '../../slices/modalSlice.jsx';
 
-export default function ModalRename({ renderChannels }) {
+export default function ModalRename({ renderChannels, setIsOpen }) {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
-  const channels = useSelector((state) => state.rootReducer.channels.channels);
+  const channels = useSelector((state) => state.rootReducer.channels.channels.channels);
   const extra = useSelector((state) => state.rootReducer.modal.extra);
 
   function handleChange(e) {
@@ -23,9 +23,15 @@ export default function ModalRename({ renderChannels }) {
     extra.renameChannel({ id: extra.id, name: text });
     setText('');
     dispatch(updateExtra({ type: 'null' }));
-    setTimeout(renderChannels(), 2000);
+    setIsOpen(false);
+    // setTimeout(renderChannels(), 2000);
   }
 
+  function handleCancel(e) {
+    e.preventDefault();
+    dispatch(updateExtra({ type: 'null' }));
+    setIsOpen(false);
+  }
   return (
     <>
       <div className="modal show fade d-block" tabIndex="-1">
@@ -34,6 +40,7 @@ export default function ModalRename({ renderChannels }) {
             <div className="modal-header">
               <h5 className="modal-title">{i18next.t('modalRenameTitle')}</h5>
               <button
+                onClick={handleCancel}
                 type="button"
                 className="btn btn-close"
                 data-bs-dismiss="modal"
@@ -54,7 +61,7 @@ export default function ModalRename({ renderChannels }) {
                   <div className="invalid feedback" />
                   <div className="d-flex justify-content-end">
                     <button
-                      onClick={() => dispatch(updateModalStatus('null'))}
+                      onClick={handleCancel}
                       type="button"
                       className="btn btn-secondary mr-2"
                       data-bs-dismiss="modal"

@@ -12,5 +12,10 @@ export default {
     modalDeleteQuestion: 'Are you sure?',
     modalDeleteTitle: 'Delete channel',
     noMatch: 'No match',
+    ValidationMinName: 'Please enter your real name',
+    ValidationReqName: 'Full name is required',
+    PasswordRequired: 'Password is required',
+    LogError: 'Wrong login or password',
+    NetError: 'Net error',
   },
 };

@@ -4,12 +4,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
 export default function Messages({
-  activeChannel,
   sendMessage,
 }) {
   const [text, setText] = useState('');
-  const messages = useSelector((state) => state.rootReducer.messages.messages);
-  console.log(`messages: ${messages}`)
+  const messages = useSelector((state) => state.rootReducer.messages.messages.messages);
+  const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
   const renderMessages = () => {
     if (!messages) {
       return null;
@@ -17,6 +16,7 @@ export default function Messages({
     if (messages.length === 0) {
       return null;
     }
+    console.log(`messages: ${messages}`);
     return (
       <div>
         {messages

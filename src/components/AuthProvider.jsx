@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import _ from "lodash";
-import AuthContext from "../AuthContext";
+import React, { useState } from 'react';
+import _ from 'lodash';
+import AuthContext from '../AuthContext';
 
 // login
 // незалогинен - нул, иначе {}
@@ -8,7 +8,7 @@ import AuthContext from "../AuthContext";
 // логаут user - null, локал стор удалить.
 
 const AuthProvider = ({ children }) => {
-  const firstToken = localStorage.getItem("token");
+  const firstToken = localStorage.getItem('token');
   // firstToken ? setIsAuthenticated(true) : setIsAuthenticated(false)
   const [isAuthenticated, setIsAuthenticated] = useState(!!firstToken);
   const [token, setToken] = useState(firstToken);
@@ -20,8 +20,8 @@ const AuthProvider = ({ children }) => {
 
   function login(name) {
     setIsAuthenticated(true);
-    setToken(localStorage.getItem("token"))
-    localStorage.setItem("user", { name, id: getNextId(), token });
+    setToken(localStorage.getItem('token'));
+    localStorage.setItem('user', { name, id: getNextId(), token });
   }
 
   function logout() {
@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
 
   function signup(name) {
     setIsAuthenticated(true);
-    localStorage.setItem("user", { name, id: getNextId(), token });
+    localStorage.setItem('user', { name, id: getNextId(), token });
   }
   return (
     <AuthContext.Provider

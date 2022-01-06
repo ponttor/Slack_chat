@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateModalStatus, updateExtra } from '../../slices/modalSlice.jsx';
+import { updateExtra } from '../../slices/modalSlice.jsx';
 
-export default function ModalDelete() {
+export default function ModalDelete({ setIsOpen }) {
   const dispatch = useDispatch();
   const extra = useSelector((state) => state.rootReducer.modal.extra);
 
@@ -11,6 +11,13 @@ export default function ModalDelete() {
     e.preventDefault();
     extra.removeChannel({ id: extra.id });
     dispatch(updateExtra({ type: 'null' }));
+    setIsOpen(false);
+  }
+
+  function handleCancel(e) {
+    e.preventDefault();
+    dispatch(updateExtra({ type: 'null' }));
+    setIsOpen(false);
   }
   return (
     <>
@@ -20,6 +27,7 @@ export default function ModalDelete() {
             <div className="modal-header">
               <h5 className="modal-title">{i18next.t('modalDeleteTitle')}</h5>
               <button
+                onClick={handleCancel}
                 type="button"
                 className="btn btn-close"
                 data-bs-dismiss="modal"
@@ -33,7 +41,7 @@ export default function ModalDelete() {
                   <div className="invalid feedback" />
                   <div className="d-flex justify-content-end">
                     <button
-                      onClick={() => dispatch(updateModalStatus('null'))}
+                      onClick={handleCancel}
                       type="button"
                       className="btn btn-secondary mr-2"
                       data-bs-dismiss="modal"
