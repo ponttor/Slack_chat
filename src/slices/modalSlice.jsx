@@ -3,21 +3,31 @@ import { createSlice } from '@reduxjs/toolkit';
 const modalSlice = createSlice({
   name: 'modal',
   initialState: {
-    modalStatus: 'null',
+    isOpened: false,
+    type: 'none',
     extra: {},
   },
   reducers: {
-    updateModalStatus(state, action) {
-      state.modalStatus = action.payload;
+    openModal(state, { payload }) {
+      const { modalType } = payload;
+      state.type = modalType;
+      state.isOpened = true;
     },
-    updateExtra(state, action) {
-      state.extra = action.payload;
+    closeModal(state) {
+      state.type = 'none';
+      state.isOpened = false;
+    },
+    updateExtra(state, { payload }) {
+      const {
+        addChannel, removeChannel, renameChannel, id,
+      } = payload;
+      state.extra.addChannel = addChannel;
+      state.extra.removeChannel = removeChannel;
+      state.extra.renameChannel = renameChannel;
+      state.extra.id = id;
     },
   },
 });
 
 export default modalSlice;
-export const {
-  updateModalStatus,
-  updateExtra,
-} = modalSlice.actions;
+export const { openModal, closeModal, updateExtra } = modalSlice.actions;

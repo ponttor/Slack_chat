@@ -51,7 +51,6 @@ const Chat = ({
         <div className="row">
           <div className="col-md-2">
             <Channels
-              activeChannel={activeChannel}
               removeChannel={removeChannel}
               renameChannel={renameChannel}
               addChannel={addChannel}
@@ -59,8 +58,6 @@ const Chat = ({
           </div>
           <div className="col-md-10">
             <Messages
-              activeChannel={activeChannel}
-              text={text}
               sendMessage={sendMessage}
             />
           </div>

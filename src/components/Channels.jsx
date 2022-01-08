@@ -1,37 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import cn from 'classnames';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateExtra } from '../slices/modalSlice.jsx';
+import { updateExtra, openModal } from '../slices/modalSlice.jsx';
 import { setActiveChannel } from '../slices/channelsSlice.jsx';
 import Modal from './Modal/Modal.jsx';
 
 export default function Channels({ removeChannel, renameChannel, addChannel }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState('');
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.rootReducer.channels.channels);
   const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
 
-  function handleClick(e) {
-    e.preventDefault();
-    setIsOpen(true);
+  function handleClick() {
+    dispatch(openModal({ modalType: 'add' }));
     dispatch(updateExtra({ addChannel }));
-    setModalType('add');
   }
 
   function handleRemoveClick(e) {
-    e.preventDefault();
-    setIsOpen(true);
+    dispatch(openModal({ modalType: 'delete' }));
     dispatch(updateExtra({ id: e.target.dataset.id, removeChannel }));
-    setModalType('delete');
   }
 
   function handleRenameClick(e) {
-    e.preventDefault();
-    setIsOpen(true);
+    dispatch(openModal({ modalType: 'rename' }));
     dispatch(updateExtra({ id: e.target.dataset.id, renameChannel }));
-    setModalType('rename');
   }
   const renderChannels = () => {
     if (!channels) {
@@ -45,14 +37,17 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
 
     return channels.map((el) => {
       const classNames = cn('btn', {
-        'btn-primary': activeChannel === el.name,
-        'btn-light': activeChannel !== el.name,
+        'btn-primary': activeChannel.activeChannelName === el.name,
+        'btn-light': activeChannel.activeChannelName !== el.name,
       });
       const classNamesDropDown = cn('btn btn-light dropdown-toggle', {
-        'btn-primary': activeChannel === el.name,
+        'btn-primary': activeChannel.activeChannelName === el.name,
       });
       const handleClickChannel = (e) => {
-        dispatch(setActiveChannel({ activeChannel: e.target.dataset.id }));
+        dispatch(setActiveChannel({
+          activeChannelId: e.target.dataset.id,
+          activeChannelName: e.target.dataset.name,
+        }));
       };
       return (
         <div key={el.id}>
@@ -61,7 +56,8 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
               type="button"
               onClick={handleClickChannel}
               className={classNames}
-              data-id={el.name}
+              data-id={el.id}
+              data-name={el.name}
             >
               {`${el.name}`}
             </button>
@@ -75,7 +71,8 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
                 type="button"
                 onClick={handleClickChannel}
                 className={classNames}
-                data-id={el.name}
+                data-id={el.id}
+                data-name={el.name}
               >
                 {`# ${el.name}`}
               </button>
@@ -94,6 +91,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
                   <li>
                     <button
                       data-id={el.id}
+                      data-name={el.name}
                       onClick={handleRemoveClick}
                       type="button"
                       className="dropdown-item"
@@ -104,6 +102,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
                   <li>
                     <button
                       data-id={el.id}
+                      data-name={el.name}
                       onClick={handleRenameClick}
                       type="button"
                       className="dropdown-item"
@@ -137,12 +136,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
           {renderChannels()}
         </div>
       </div>
-      <Modal
-        type={modalType}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        renderChannels={renderChannels}
-      />
+      <Modal />
     </div>
   );
 }

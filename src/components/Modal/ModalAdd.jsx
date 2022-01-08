@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateExtra } from '../../slices/modalSlice.jsx';
+import { updateExtra, closeModal } from '../../slices/modalSlice.jsx';
 
-export default function ModalAdd({ setIsOpen }) {
+export default function ModalAdd() {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const channels = useSelector((state) => state.rootReducer.channels.channels);
@@ -26,13 +26,17 @@ export default function ModalAdd({ setIsOpen }) {
     addChannel(text);
     setText('');
     dispatch(updateExtra({}));
-    setIsOpen(false);
+    dispatch(closeModal());
   }
 
   function handleChange(e) {
     setText(e.target.value);
   }
 
+  function handleCancel() {
+    dispatch(updateExtra({}));
+    dispatch(closeModal());
+  }
   return (
     <div className="modal show fade d-block" tabIndex="-1">
       <div className="modal-dialog">
@@ -44,7 +48,7 @@ export default function ModalAdd({ setIsOpen }) {
               className="btn btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={() => setIsOpen(false)}
+              onClick={handleCancel}
             />
           </div>
           <div className="modal-body">
@@ -61,7 +65,7 @@ export default function ModalAdd({ setIsOpen }) {
                 <div className="invalid feedback" />
                 <div className="d-flex justify-content-end">
                   <button
-                    onClick={() => setIsOpen(false)}
+                    onClick={handleCancel}
                     type="button"
                     className="btn btn-secondary mr-2"
                     data-bs-dismiss="modal"

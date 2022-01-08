@@ -9,6 +9,7 @@ export default function Messages({
   const [text, setText] = useState('');
   const messages = useSelector((state) => state.rootReducer.messages.messages);
   const activeChannel = useSelector((state) => state.rootReducer.channels.activeChannel);
+  // const channels = useSelector((state) => state.rootReducer.channels.channels);
   const renderMessages = () => {
     if (!messages) {
       return null;
@@ -19,7 +20,7 @@ export default function Messages({
     return (
       <div>
         {messages
-          .filter((el) => el.channel === activeChannel)
+          .filter((el) => el.channel === activeChannel.activeChannelName)
           .map((el) => <div key={el.id}>{el.message}</div>)}
       </div>
     );
@@ -36,7 +37,7 @@ export default function Messages({
       console.log('nothing to send');
       return;
     }
-    sendMessage({ message: text, channel: activeChannel });
+    sendMessage({ message: text, channel: activeChannel.activeChannelName, channelId: activeChannel.activeChannelId });
     setText('');
   }
 
@@ -44,7 +45,7 @@ export default function Messages({
     <div>
       <div className="bg-white d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3">
-          <p className="m-0"><b>{activeChannel}</b></p>
+          <p className="m-0"><b>{activeChannel.activeChannelName}</b></p>
           <span className="text-muted">количество сообщений</span>
         </div>
         <div className="bg-white chat-messages overflow-auto px-5">

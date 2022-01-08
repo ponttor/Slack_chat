@@ -1,28 +1,25 @@
 import React from 'react';
-
+import { useSelector } from 'react-redux';
 import Add from './ModalAdd.jsx';
 import Delete from './ModalDelete.jsx';
 import Rename from './ModalRename.jsx';
 
-export default function Modal({
-  type,
-  isOpen,
-  setIsOpen,
-  renderChannels,
-}) {
-  if (!isOpen) {
+export default function Modal() {
+  const modal = useSelector((state) => state.rootReducer.modal);
+
+  if (!modal.isOpened) {
     return null;
   }
-  switch (type) {
+  switch (modal.type) {
     case 'add':
-      return <Add setIsOpen={setIsOpen} />;
+      return <Add />;
     case 'rename':
-      return <Rename renderChannels={renderChannels} setIsOpen={setIsOpen} />;
+      return <Rename />;
     case 'delete':
-      return <Delete setIsOpen={setIsOpen} />;
-    case 'null':
+      return <Delete />;
+    case 'none':
       return null;
     default:
-      throw new Error(`Unknown type: ${type}`);
+      throw new Error(`Unknown type: ${modal.type}`);
   }
 }

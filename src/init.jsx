@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { BrouserRouter as Router } from "react-router-dom";
-import i18next from "i18next";
+import React from 'react';
+import i18next from 'i18next';
 import 'popper.js';
-import { io } from "socket.io-client";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./slices/index.js";
-import resources from "./locales/index.js";
-import App from "./components/App.jsx";
+import { io } from 'socket.io-client';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './slices/index.js';
+import resources from './locales/index.js';
+import App from './components/App.jsx';
 
-export default () => {
+export default async () => {
   // if (process.env.NODE_ENV !== 'production') {
   //   localStorage.debug = 'chat:*';
   // }
@@ -20,16 +19,16 @@ export default () => {
     reducer: { rootReducer },
   });
 
-  i18next.init({
-    lng: "ru",
+  await i18next.init({
+    lng: 'ru',
     debug: true,
     resources,
   });
 
   ReactDOM.render(
     <Provider store={store}>
-        <App socket={socket} />
+      <App socket={socket} />
     </Provider>,
-    document.getElementById("chat"),
+    document.getElementById('chat'),
   );
 };

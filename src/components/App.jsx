@@ -30,15 +30,15 @@ const App = ({ socket }) => {
   socket.on('removeChannel', (data) => {
     dispatch(deleteChannel({ channelId: data.id }));
   });
-  socket.on('renameChannel', ({ channelId, name }) => {
-    dispatch(updateChannel({ channelId, name }));
+  socket.on('renameChannel', ({ name, id }) => {
+    dispatch(updateChannel({ channelId: id, name }));
   });
 
   // const notify = () => toast('Wow so easy!');
-  const sendMessage = ({ message, channel }) => {
+  const sendMessage = ({ message, channel, channelId }) => {
     // notify();
     if (socket.connected) {
-      socket.emit('newMessage', { message, channel });
+      socket.emit('newMessage', { message, channel, channelId });
     } else {
       console.log('no connection');
     }

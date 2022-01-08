@@ -1,23 +1,24 @@
 import React from 'react';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateExtra } from '../../slices/modalSlice.jsx';
+import { updateExtra, closeModal } from '../../slices/modalSlice.jsx';
+import { setActiveChannel } from '../../slices/channelsSlice.jsx';
 
-export default function ModalDelete({ setIsOpen }) {
+export default function ModalDelete() {
   const dispatch = useDispatch();
-  const extra = useSelector((state) => state.rootReducer.modal.extra);
+  const { removeChannel, id } = useSelector((state) => state.rootReducer.modal.extra);
 
   function handleRemove(e) {
     e.preventDefault();
-    extra.removeChannel({ id: extra.id });
-    dispatch(updateExtra({ type: 'null' }));
-    setIsOpen(false);
+    removeChannel({ id });
+    dispatch(updateExtra({}));
+    dispatch(closeModal());
+    dispatch(setActiveChannel({ activeChannelName: 'general', activeChannelId: '1' }));
   }
 
-  function handleCancel(e) {
-    e.preventDefault();
-    dispatch(updateExtra({ type: 'null' }));
-    setIsOpen(false);
+  function handleCancel() {
+    dispatch(updateExtra({}));
+    dispatch(closeModal());
   }
   return (
     <>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import i18next from 'i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateExtra } from '../../slices/modalSlice.jsx';
+import { updateExtra, closeModal } from '../../slices/modalSlice.jsx';
 
-export default function ModalRename({ renderChannels, setIsOpen }) {
+export default function ModalRename() {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const channels = useSelector((state) => state.rootReducer.channels.channels);
@@ -22,15 +22,13 @@ export default function ModalRename({ renderChannels, setIsOpen }) {
     }
     extra.renameChannel({ id: extra.id, name: text });
     setText('');
-    dispatch(updateExtra({ type: 'null' }));
-    setIsOpen(false);
-    // setTimeout(renderChannels(), 2000);
+    dispatch(updateExtra({}));
+    dispatch(closeModal());
   }
 
-  function handleCancel(e) {
-    e.preventDefault();
-    dispatch(updateExtra({ type: 'null' }));
-    setIsOpen(false);
+  function handleCancel() {
+    dispatch(updateExtra({}));
+    dispatch(closeModal());
   }
   return (
     <>

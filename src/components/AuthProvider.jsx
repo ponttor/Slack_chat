@@ -6,6 +6,8 @@ const AuthProvider = ({ children }) => {
   const firstToken = localStorage.getItem('token');
   const [isAuthenticated, setIsAuthenticated] = useState(!!firstToken);
   const [token, setToken] = useState(firstToken);
+  // const { userName } = localStorage.getItem('userName');
+  // console.log(userName);
   // if (token) {
   //   setIsAuthenticated(true);
   // }
@@ -15,6 +17,7 @@ const AuthProvider = ({ children }) => {
   function login(name) {
     setIsAuthenticated(true);
     setToken(localStorage.getItem('token'));
+    localStorage.setItem('userName', { userName: name });
     localStorage.setItem('user', { name, id: getNextId(), token });
   }
 
