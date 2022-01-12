@@ -12,7 +12,7 @@ const messagesSlice = createSlice({
       const { message } = payload;
       state.messages.push(message);
     },
-    updateMessages(state, { payload }) {
+    setInitialMessages(state, { payload }) {
       const { messages } = payload;
       state.messages = messages;
     },
@@ -29,6 +29,6 @@ const messagesSlice = createSlice({
 });
 
 export default messagesSlice;
-const { addNewMessage, updateMessages } = messagesSlice.actions;
+const { addNewMessage, setInitialMessages } = messagesSlice.actions;
 
-export { addNewMessage, updateMessages };
+export { addNewMessage, setInitialMessages };

@@ -96,7 +96,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
                       type="button"
                       className="dropdown-item"
                     >
-                      Удалить
+                      {i18next.t('delete')}
                     </button>
                   </li>
                   <li>
@@ -107,7 +107,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
                       type="button"
                       className="dropdown-item"
                     >
-                      Переименовать
+                      {i18next.t('rename')}
                     </button>
                   </li>
                 </ul>
@@ -129,7 +129,7 @@ export default function Channels({ removeChannel, renameChannel, addChannel }) {
             type="button"
             className="btn m-3 h-25 text-primary border border-primary h-20 align-self-center"
           >
-            +
+            {i18next.t('plus')}
           </button>
         </div>
         <div className="btn-group-vertical" role="group">

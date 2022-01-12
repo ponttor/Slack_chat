@@ -29,5 +29,8 @@ export default {
     LogErrorName: 'Введите свое имя',
     LogErrorPassword: 'Введите пароль',
     NetError: 'Ошибка сети',
+    rename: 'Переименовать',
+    delete: 'удалить',
+    plus: '+',
   },
 };
